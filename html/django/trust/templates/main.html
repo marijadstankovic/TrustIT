@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<!-- PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" -->
+
+<html lang="en">
+    <head>
+        <title>Trust</title>
+        <meta charset=UTF-8">
+		{% load static %}
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<!-- <script type="text/javascript" src="{% static 'js/main.js' %}"></script> -->
+    </head>
+    <body>
+		<div class="header">
+			<div class="space"></div>
+			<button href="#about" class="example_b">About</button>
+		</div>
+		<div class="footer" id="about">
+			<h4>The goal of this Web application was to detect a fake news and, in that manner, help the users distinguish lie from truth.
+			The predictor is a "Multi Layer Perception" Neural Network that is trained on sampled news from various internet sources.
+			</h4>
+		</div>
+		<div class="main">
+			<form  action="NN"  method="post" class=list>
+				{% csrf_token %}
+				<div class="1">
+					<label>Text:</label>
+					<br/>
+					<input type="text" id="txtTitle" name="txtTitlet" required></input>
+				</div>
+				<div class="txt">
+					<!-- <label>Text:</label> -->
+					<br/>
+					<!-- <textarea id="txtText" name="txtTextt" required> {{ajdebogo}}</textarea> -->
+				</div>
+				<input type="submit" class="example_c" align="center" id="example" value="See result.."></input>
+			</form>
+			<!-- Slideshow container -->
+
+			<div class="news">
+				<p class="result">{{result}} </p>
+				<div class="slide">
+					<div  class="circleP" id="circleP" ><</div>
+					<div id="idText" class="text"></div>
+					<div  class="circleN" id="circleN" >></div>
+				</div>
+				<div  class="button_cont" align="center"><a id="exam" class="example_c" href="" target="_blank" rel="nofollow noopener">Read More</a></div>
+				<!-- Next and previous buttons -->
+			</div>
+		</div>
+		<script>	
+			const txtTitle = document.getElementById("txtTitle");
+			const txtText = document.getElementById("txtText");
+			const btnNext = document.getElementById("example");
+			const btnCP=document.getElementById("circleP");
+			const btnCN=document.getElementById("circleN");
+			const btnLink=document.getElementById("exam");
+			let count=0;
+			let a="";
+			
+			function runSlide(x){
+				document.getElementById("idText").innerHTML=x.title[count];
+				btnLink.href=x.source[count] + x._id[count];
+			}
+			
+			
+			fetch("abs")
+					.then(response => {
+						if (!response.ok)
+							throw Error(response.statusText);
+						return response.json()
+						
+					})
+					.then(response=>{
+						a=JSON.parse(response.abs);
+						runSlide(a);
+					})
+					.catch(error =>
+					{
+						console.log(error);
+					})
+					
+			btnCN.onclick=ev=>{
+				if(count == a.title.length)
+					count=0;
+				count++;
+				runSlide(a);
+				
+			}
+			
+			btnCP.onclick=ev=>{
+				if(count == 0)
+					count=a.title.length;
+				count--;
+				runSlide(a);
+			}
+		</script>
+		
+    </body>
+</html>

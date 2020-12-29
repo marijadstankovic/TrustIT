@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{{resources}}
+</head>
+<body>
+  <div id="myplot"></div>
+  <div id="myplot2"></div>
+  <script>
+  fetch('/pr')
+    .then(function(response) { return response.json(); })
+    .then(function(item) { Bokeh.embed.embed_item(item['graf']); })
+  </script>
+
+</body>
+</html>
